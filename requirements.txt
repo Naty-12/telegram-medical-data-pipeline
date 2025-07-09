@@ -1,0 +1,15 @@
+# requirements.txt
+telethon
+psycopg2-binary
+sqlalchemy
+dbt-postgres
+dagster
+dagster-postgres
+fastapi
+uvicorn
+python-dotenv
+opencv-python
+torch
+matplotlib
+pydantic
+pandas
