@@ -22,6 +22,8 @@ venv/
 *.env
 
 # Data files
+data/
+
 data/*.csv
 data/*.parquet
 data/*.json
