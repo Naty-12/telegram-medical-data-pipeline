@@ -1,0 +1,68 @@
+# medical_telegram_dwh/models/marts/schema.yml
+version: 2
+
+models:
+  - name: dim_channels
+    description: "Dimension table for Telegram channels."
+    columns:
+      - name: channel_sk
+        description: "Surrogate key for the channel dimension."
+        tests:
+          - unique
+          - not_null
+      - name: channel_username
+        description: "Username of the Telegram channel."
+        tests:
+          - unique
+          - not_null
+
+  - name: dim_dates
+    description: "Dimension table for dates."
+    columns:
+      - name: date_pk
+        description: "Primary key for the date dimension (YYYY-MM-DD)."
+        tests:
+          - unique
+          - not_null
+      - name: date_id
+        description: "Integer representation of the date (YYYYMMDD)."
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_messages
+    description: "Fact table containing Telegram message details and metrics."
+    columns:
+      - name: message_id
+        description: "Unique identifier for the message."
+        tests:
+          - unique
+          - not_null
+      - name: channel_fk
+        description: "Foreign key to the dim_channels table."
+        tests:
+          - not_null
+          - relationships: # Ensures every channel_fk exists in dim_channels
+              to: ref('dim_channels')
+              field: channel_sk
+      - name: date_fk
+        description: "Foreign key to the dim_dates table."
+        tests:
+          - not_null
+          - relationships: # Ensures every date_fk exists in dim_dates
+              to: ref('dim_dates')
+              field: date_pk
+      - name: message_text
+        description: "The content of the message."
+      - name: message_views
+        description: "Number of views the message received."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0" # Ensure views are non-negative
+      - name: num_images_attached
+        description: "The count of images attached to this message."
+        tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              expression: ">= 0"
