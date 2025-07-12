@@ -51,3 +51,18 @@ vector_store/
 *.pkl
 
 vector_store/directory/complaints_metadata.pkl
+# dbt build artifacts
+dbt_modules/
+dbt_packages/
+target/
+dbt_logs/
+
+# OS and editor stuff
+__pycache__/
+*.pyc
+*.pyo
+*.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
