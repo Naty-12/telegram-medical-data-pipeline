@@ -18,4 +18,4 @@ sources:
           - name: confidence_score
             description: "Confidence score of the detection."
           - name: detection_timestamp
-            description: "Timestamp when the object detection was performed
+            description: "Timestamp when the object detection was performed"
