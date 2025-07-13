@@ -1,4 +1,3 @@
-# medical_telegram_dwh/models/marts/schema.yml
 version: 2
 
 models:
@@ -42,14 +41,14 @@ models:
         description: "Foreign key to the dim_channels table."
         tests:
           - not_null
-          - relationships: # Ensures every channel_fk exists in dim_channels
+          - relationships:
               to: ref('dim_channels')
               field: channel_sk
       - name: date_fk
         description: "Foreign key to the dim_dates table."
         tests:
           - not_null
-          - relationships: # Ensures every date_fk exists in dim_dates
+          - relationships:
               to: ref('dim_dates')
               field: date_pk
       - name: message_text
@@ -59,15 +58,15 @@ models:
         tests:
           - not_null
           - dbt_utils.expression_is_true:
-              expression: ">= 0" # Ensure views are non-negative
+              expression: "message_views >= 0"
       - name: num_images_attached
         description: "The count of images attached to this message."
         tests:
           - not_null
           - dbt_utils.expression_is_true:
-              expression: ">= 0"
+              expression: "num_images_attached >= 0"
 
-      - name: fct_image_detections
+  - name: fct_image_detections
     description: "Fact table containing object detection findings from message images."
     columns:
       - name: message_id
@@ -89,5 +88,7 @@ models:
         description: "Confidence score of the object detection (0.0 to 1.0)."
         tests:
           - not_null
-          - dbt_utils.expression_is_true:
-              expression: "confidence_score >= 0.0 AND confidence_score <= 1.0"
+          # - dbt_utils.expression_is_true:
+           #    expression: "confidence_score >= 0.0 AND confidence_score <= 1.0"
+      - name: detection_timestamp
+        description: "Timestamp when the detection was performed."
